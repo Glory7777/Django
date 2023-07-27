@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block contents %} 
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h1>로그인</h1>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-12">
+        <!-- views.py에 register 메소드로 부터 받아온 메세지 출력 -->
+        {{ error }}  
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-12">
+        <form action="." method="POST">
+            <!-- 암호화된 키 인증 : 암호가 맞지 않으면 요청되지 않음 -->
+            {% csrf_token %} 
+            <!-- form 객체에 있는 각 필드 반복하여 속성 변경 -->
+            <!-- field.id_for_label : 해당하는 폼 필드의 id를 가져옴
+            field.label : 해당 필드의 라벨 텍스트값을 가져옴 -->
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{field.id_for_label}}">{{field.label}}</label>
+                    <input type="{{field.field.widget.input_type}}" class="form-control" id="{{field.id_for_label}}" placeholder="{{field.label}}" name="{{field.name}}" />
+                  </div>
+            {% if field.errors %}
+                  <span style="color:red">{{field.errors}}</span>
+            {% endif %}
+            {% endfor %}
+                  <button type="submit" class="btn btn-primary">로그인</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

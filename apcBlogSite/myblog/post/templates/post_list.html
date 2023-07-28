@@ -10,12 +10,12 @@
 <div class="row mt-5">
     <div class="col-12">
     {% for post in posts %}
-        <h2><a href="{% url post_detail pk=post.pk%}">{{post.title}} </a></h2>
+        <h2><a href="{% url 'post_detail' pk=post.pk%}">{{post.title}} </a></h2>
         <p>{{post.body|truncatewords:30}} </p>
         {% empty%}
         <p>No posts yet. </p>
     {% endfor%}
-    <a href="{% url post_new %}" class="btn btn-primary mt-4">New Post</a>
+    <a href="{% url 'post_new' %}" class="btn btn-primary mt-4">New Post</a>
     </div>
 </div>
 {% endblock %}

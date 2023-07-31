@@ -27,3 +27,5 @@ class Comment(models.Model):
     class Meta:
         verbose_name='댓글'
         verbose_name_plural='댓글들'
+        
+        #related_name: 포스트(글)이 데리고 있는 모든 댓글들을 불러오는 참조 방식이다.

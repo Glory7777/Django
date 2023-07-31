@@ -25,4 +25,15 @@ def post_detail(request, pk):
     return render(request, 'post_detail.html',{'post':post, 'comments':comments,'comment_form':comment_form})
         
 def post_new(request):
-    pass
+    if request.method == 'POST':
+        form=PostForm(request.POST) # 입력정보 받아오기
+        if form.is_valid(): # title, body 가져왔니?
+            post=form.save(commit=False)
+            post.author = request.user
+            post.save()
+            #return redirect('post_detail', pk=post.pk) # post 후 comment 입력 유도
+            return redirect('post_list') # post 후 목록확인
+    else:
+        form=PostForm()
+        
+    return render(request, 'post_new.html', {'form':form})

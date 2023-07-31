@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Post, Comment
-
-admin.site.register(Post) #데이터 베이스 Post를  admin 사이트에 등록
+from .models import Post
 # Register your models here.
+
+class PostAdmin(admin.ModelAdmin):
+    list_display=('title', 'body','image') #admin등록시 노출정보
+
+admin.site.register(Post, PostAdmin) #DB Post를 admin에 등록

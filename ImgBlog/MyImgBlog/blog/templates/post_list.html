@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h1>Post List</h1>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-12">
+    {% for post in posts %}
+        <h2><a href="#">{{post.title}} </a></h2>
+        <p>{{post.body|truncatewords:30}} </p>
+        {% if post.image %}
+        <p><img src="{{ post.image.url }}" alt="{{ post.title }}" /></p>
+        {% else %}
+        <p>No image available.</p>
+        {% endif %}
+    {% empty %}
+        <p>No posts yet. </p>
+    {% endfor%}
+    <a href="#" class="btn btn-primary mt-4">New Post</a>
+    </div>
+</div>
+{% endblock %}

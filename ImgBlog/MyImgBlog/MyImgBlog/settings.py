@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -116,16 +118,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/' # 폴더를 만들어서
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # root에 적용
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# 이미지 루트
-from pathlib import Path
-import os
+# # 이미지 루트
+# from pathlib import Path
+# import os
 
-MEDIA_URL = '/posts/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'posts')
+# MEDIA_URL = '/posts/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'posts')

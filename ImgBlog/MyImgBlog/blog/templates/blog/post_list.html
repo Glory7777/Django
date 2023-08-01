@@ -1,0 +1,68 @@
+{% load static %}
+ 
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            h1 {
+                text-align: center; 
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        <h1 class="mt-4 mb-3">My Blog</h1>
+        {% for post in posts %}
+        <div class="card mb-4">
+        <div class="card-body">
+            <!-- 'post_detail'라는 뷰에 대한 URL을 동적으로 생성. 여기서 'pk=post.pk'는 해당 뷰에 전달할 파라미터를 지정 -->
+            <h2 class="card-title"><a href="{% url 'post_detail' pk=post.pk %}" class="text-decoration-none text-dark">{{ post.title }}</a></h2>
+            <!-- 
+            post.tex|linebreaksbr : enter를 br태그로 변경하여 출력하라는 뜻
+            post.tex|truncatewords:5 : 5 단어 까지만 노출 나머지
+            -->
+            <p class="card-text">{{ post.body|linebreaksbr }}</p>
+            {% if post.image %}
+                <!-- 각 포스트에 연결된 이미지의 URL을 동적으로 지정 -->
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid">
+            {% endif %}
+        </div>
+        <div class="card-footer text-muted">
+        <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-primary">Edit</a>
+        </div>
+        </div>
+        {% endfor %}
+        <a href="{% url 'post_new' %}" class="btn btn-success">New Post</a>
+    </div>
+</body>
+</html>
+
+
+
+
+{% comment %} 
+
+{% extends 'base.html' %}
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h1>Post List</h1>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-12">
+    {% for post in posts %}
+        <h2><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}} </a></h2>
+        <p>{{post.body|truncatewords:30}} </p>
+
+        {% if post.image.url is not None %}
+        <p> <img src="{{ post.image.url }}" alt="{{post.title}}" class="img-fluid"/> </p>
+        {% endif %}
+        {% empty %}
+            <p>No posts yet. </p>
+    {% endfor%}
+    <a href="{% url 'post_new' %}" class="btn btn-primary mt-4">New Post</a>
+    </div>
+</div>
+{% endblock %}  
+ {% endcomment %}

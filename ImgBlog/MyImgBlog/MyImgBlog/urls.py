@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from bcuser.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('blog.urls')),
+    path('post/', include('blog.urls')),
+    path('user/', include('bcuser.urls')),
+    path('', home, name='userHome'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # media 경로 추가
 
 # # if settings.DEBUG:
@@ -29,5 +32,3 @@ urlpatterns = [
 
 # static() : DEBUG = True 일때 settings.MEDIA_URL에 정의된 패턴과 일치하는 URL을
 # settings.MEDIA_ROOT에서 정의해준 위치에서 제공하도록 라우팅한다는 뜻.
-
-

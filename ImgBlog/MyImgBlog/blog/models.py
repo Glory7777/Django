@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from bcuser.models import Bcuser 
 
 class Post(models.Model):
-    author=models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='작성자') # User가 참조되는 Foreignkey로 user 가 탈퇴하면 게시글 같이 소멸됨 
+    author=models.ForeignKey(Bcuser, on_delete=models.CASCADE, verbose_name='작성자') # User가 참조되는 Foreignkey로 user 가 탈퇴하면 게시글 같이 소멸됨 
     title= models.CharField(max_length=200, verbose_name='제목')
     body=models.TextField(verbose_name='내용')
     image=models.ImageField(upload_to='posts/', null=True, blank=True, verbose_name='이미지')

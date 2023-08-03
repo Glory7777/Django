@@ -3,6 +3,8 @@ from .models import Post
 from .forms import PostForm
 from django.utils import timezone
 from bcuser.models import Bcuser 
+from django.core.exceptions import PermissionDenied
+
 
 def post_list(request):
     # Post 데이터 베이스의 모든 데이터 가져오기(publiShed_date가 현재시간 기준 이전 시간꺼 모두 가져오기)
@@ -57,20 +59,40 @@ def post_edit(request, pk):
     return render(request, 'blog/post_edit.html', {'form':form})
 
 
-def post_delete(request, pk): 
+# def post_delete(request, pk):
+#     post = get_object_or_404(Post, pk=pk) 
+#     # 로그인한 계정(bcuser의 models에 write의 정보)
+#     user_id = request.session.get('user')
+#     bcuser= Bcuser.objects.get(pk=user_id)
+#     post.author = bcuser
+#     # 예외처리
+#     if not request.session.get('user'):
+#             return redirect('post_list')
+
+#     # # 게시글 번호 가져오기
+#     # board = Board.objects.get(pk=pk) #유저 정보 관련된 객체만 집어옴
+
+#     if bcuser == user_id:
+#         bcuser.delete()
+#     else:
+#         raise ValueError("권한이 없습니다. ")
+#     # return redirect('post_list')
+#     return redirect('post_detail', pk=post.pk)
+
+
+
+
+            # user_id= request.session.get('user')
+            # bcuser= Bcuser.objects.get(pk=user_id) # asign 할당 문제와 코드흐름
+            
+            # post.author = bcuser
+
+def post_delete(request, pk):
+    post = get_object_or_404(Post, pk=pk) 
     # 로그인한 계정(bcuser의 models에 write의 정보)
     user_id = request.session.get('user')
-    bcuser= Bcuser.objects.get(pk=user_id)
-    
-    # 예외처리
-    if not request.session.get('user'):
-            return redirect('post_detail')
+    delete_blog= Bcuser.objects.get(pk=user_id)
+    delete_blog.delete()
 
-    # # 게시글 번호 가져오기
-    # board = Board.objects.get(pk=pk) #유저 정보 관련된 객체만 집어옴
-
-    if Bcuser.objects.get(pk=user_id) == post.author:
-        board.delete()
-    else:
-        raise Http404("권한이 없습니다. ")
     return redirect('post_list')
+            

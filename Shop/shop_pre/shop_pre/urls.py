@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from bcuser.views import index, RegisterView, LoginView, logout
+from product.views import ProductList, ProductCreate, ProductDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +26,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view()), #클래스이기에 as_view, 메서드는 안넣어줌
     path('login/', LoginView.as_view()),
     path('logout/', logout),
+    path('product/', ProductList.as_view()),
+    path('product/create/', ProductCreate.as_view()),
+    path('product/<int:pk>/', ProductDetail.as_view()),
 ]

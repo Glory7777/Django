@@ -58,63 +58,35 @@ def post_edit(request, pk):
         form=PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form':form})
 
-def post_delete_move(request, pk):
-    
+
 
 def post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
     # 로그인한 계정(bcuser의 models에 write의 정보)
-    user_id = request.session.get('user')
+    post.delete()
+    return redirect('post_list')
 
-    # 예외처리
-    if not request.session.get('user'):
-        return redirect('/bcuser/login/')
+
+
+# # def post_delete_move(request, pk):
     
-    # # 게시글 번호 가져오기
-    # board=Board.objects.get(pk=pk)
-
-    if Bcuser.objects.get(pk=user_id) == post.author:
-        post.delete()
-    else:
-        raise Http404("권한이 없습니다. ")
-    
-    return redirect('board_list')
-
 
 # def post_delete(request, pk):
-#     post = get_object_or_404(Post, pk=pk) 
+#     post = get_object_or_404(Post, pk=pk)
 #     # 로그인한 계정(bcuser의 models에 write의 정보)
 #     user_id = request.session.get('user')
-#     bcuser= Bcuser.objects.get(pk=user_id)
-#     post.author = bcuser
+
 #     # 예외처리
 #     if not request.session.get('user'):
-#             return redirect('post_list')
-
+#         return redirect('/user/login/')
+    
 #     # # 게시글 번호 가져오기
-#     # board = Board.objects.get(pk=pk) #유저 정보 관련된 객체만 집어옴
+#     # board=Board.objects.get(pk=pk)
 
-#     if bcuser == user_id:
-#         bcuser.delete()
+#     if Bcuser.objects.get(pk=user_id) == post.author:
+#         post.delete()
 #     else:
-#         raise ValueError("권한이 없습니다. ")
-#     # return redirect('post_list')
-#     return redirect('post_detail', pk=post.pk)
-
-
-
-
-            # user_id= request.session.get('user')
-            # bcuser= Bcuser.objects.get(pk=user_id) # asign 할당 문제와 코드흐름
-            
-            # post.author = bcuser
-
-# def post_delete(request, pk):
-#     post = get_object_or_404(Post, pk=pk) 
-#     # 로그인한 계정(bcuser의 models에 write의 정보)
-#     user_id = request.session.get('user')
-#     delete_blog= Bcuser.objects.get(pk=user_id)
-#     delete_blog.delete()
-
+#         raise Http404("권한이 없습니다. ")
+    
 #     return redirect('post_list')
-            
+

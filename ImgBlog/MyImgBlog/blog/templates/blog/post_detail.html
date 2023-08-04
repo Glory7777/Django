@@ -45,8 +45,16 @@
             .a-center{
             text-align: center;
             }
-            .
+
+            .image-container {
+                text-align: center; 
+                max-width: 103%; 
+                height: auto; 
+            }
             
+            
+
+
     </style>
     </head>
         <body>
@@ -60,7 +68,7 @@
             <textarea name="text" readonly>{{ post.body}} </textarea>
             {% if post.image %}
                 <!-- 각 포스트에 연결된 이미지의 URL을 동적으로 지정 -->
-                <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                <img src="{{ post.image.url }}"  class="image-container" alt="{{ post.title }}" >
             {% endif %}
             {% comment %} <input type="fiel" name="image"><br/>
             <button type="submit" class="save btn btn-default">Save</button> {% endcomment %}
@@ -71,6 +79,7 @@
             </div>
         </body>
 </html>
+
 
 
 
@@ -101,11 +110,10 @@
 </div>
 
 <hr>
-
         <button type="button" class="btn btn-primary" onclick="location.href='/'">돌아가기 </button> 
         <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-success">수정하기</a>
     </div>
 </div>
 
 {% endblock %} 
-{% endcomment %}
+{% endcomment %}  

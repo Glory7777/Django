@@ -3,6 +3,7 @@ from .models import Product
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 from .forms import RegisterForm
+from order.forms import RegisterForm as OrderForm #같은 기능 이라 RegisterForm 이지만 헷갈릴 수 있기에 애칭을 정해줌
 
 # ListView : ListView를 사용하면 데이터베이스에서 목록을 가져와서 
 # 템플릿에 어떤 데이터 타입이든 쉽게 전달하는 작업을 수행해줌
@@ -35,5 +36,8 @@ class ProductDetail(DetailView):
         # **kwargs : 함수에 정해지지 않은 매개변수의 가변갯수을 활용하여 오버라이딩함
         # 상세정보의 필드를 가변적으로 선택하여 보여줄 수 있음
     def get_context_data(self, **kwargs):
+        # 기본적인 Product의 데이터 가져오기
         context=super().get_context_data(**kwargs)
+        # Order 의 OrderForm에서 받아온 데이터 추가
+        context['form']=OrderForm(self.request)
         return context 

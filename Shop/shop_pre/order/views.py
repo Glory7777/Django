@@ -11,14 +11,20 @@ from product.models import Product
 from bcuser.models import Bcuser
 from .models import Order
 
+
+from bcuser.decorators import login_required
+from django.utils.decorators import method_decorator
+
+
+@method_decorator(login_required, name='dispatch')
 class OrderCreate(FormView):
     form_class=RegisterForm
-    success_url='/order/' # 또는 /product/
+    success_url='/product/' # 또는 /product/ '/order/'
     
     #폼의 데이터 유효성 검사
     def form_valid(self, form):
         # transaction 블록 내에서 수행되는 모든 데이터베이스 연산은 원자성을 갖는다
-        # 원자성(atomicity) : 블록 내에 연산 중에 하나라도 실패하면 모든 연산이 취소됨/ 데이터베이스가 작업하는 단위, 처리단위
+        # 원자성(atomicity) : 즉, 블록 내에 연산 중에 하나라도 실패하면 모든 연산이 취소됨/ 데이터베이스가 작업하는 단위, 처리단위
         with transaction.atomic(): # 데이터베이스의 트랜젝션 시작 / 트랜젝션: 데이터베이스를 처리하는 단위, 작업단위, 세션 구역을 만들어 놔서 임계지역 만들어 
             # 폼 데이터에서 제품 id를 가져와서 저장
             prod = Product.objects.get(pk=form.data.get('product'))
@@ -52,6 +58,7 @@ class OrderCreate(FormView):
         return kw
     
 # 현재 세션에 있는 이메일에 해당하는 order객체를 필터링하여 주문 정보 가져옴
+@method_decorator(login_required, name='dispatch')
 class OrderList(ListView):
     # model=Order #주문된 제품만 가져오므로 쿼리를 통해서 가져옴
     context_object_name='order_list'

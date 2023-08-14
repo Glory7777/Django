@@ -1,6 +1,29 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% block contents %}
+<script>
+    function product_detail(id){
+        $.ajax({
+            url:"/api/product/"+id, // 상품의 id를 사용하여 api 엔드포인트 url을 지정
+            // popover 컴포넌트(부트스트랩에서 제공하는 툹닙 유사한 ui 컴포턴트)를
+            // 특정 상품요소에 바인딩하고 해당 상품의 이름과 가격을 표시
+            success : function(result){
+                $("#product-"+id).popover({
+                    html:true, 
+                    content: result.name + "<br/>" +result.price+"<br/>" +result.description //상품 중 이름+가격 가져와서 popover 로 가져옴
+                }).popover('show');
+            }// success
+        }) // ajax
+    
+    }//product_detail
+    
+    function product_leave(id){
+        $("#product-"+id).popover("hide");        
+    }
+    //사용자가 상품 요소에서 벗어났을 때 popover 숨기기
+    $(document).ready(function(){});
+</script>
+
 <div class="row mt-5">
     <div class="col-12">
         <table class="table table-light">
@@ -17,7 +40,8 @@
                 {% for product in product_list %}
                 <tr>
                     <th scope="row">{{ product.id }}</th>
-                    <th><a href="/product/{{ product.id }}">{{ product.name }}</a></th>
+                    <th><a id="product-{{product.id}}" onmouseenter="product_detail({{product.id}});" 
+                        onmouseleave="product_leave({{product.id}});" href="/product/{{ product.id }}">{{ product.name }}</a></th>
                     <th>{{ product.price|intcomma}} 원</th>
                     <th>{{ product.register_date|date:'Y-m-d H:i'}}</th>
                 </tr>
@@ -28,3 +52,65 @@
 </div>
 
 {% endblock %}
+
+
+
+
+
+
+
+
+{% comment %} 
+{% extends 'base.html' %}
+{% load humanize %}
+{% block contents %}
+<script>
+function product_detail(id){
+    $.ajax({
+        url: "/api/product/" +id,
+        success : function(result){
+            $("#product-"+id).popover({
+                html:true,
+                content: result.name + "<br/>" + result.price
+            }).popover('show');
+        }// success 
+        });//ajax
+}//product_detail
+
+// 사용자가 상품 요소에서 벗어났을 때 popover를 숨기기
+function product_leave(id){
+    $("#product"+id).popover("hide");
+}
+//문서가 완전히 로드된 후에 실행되는 이벤트 핸들러
+$(document).ready(function(){};)
+</script>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <table class="table table-light">
+            <thead class="thead-light">
+                <tr>
+    <!--scope="col" : 헤더 셀이 어떤 테이블 셀을 명시함 -->
+                    <th scope="col">#</th>
+                    <th scope="col">상품명</th>
+                    <th scope="col">가격</th>
+                    <th scope="col">등록날짜</th>
+                </tr>
+                </thead>
+                <tbody class="text-dark">
+                {% for product in product_list %}
+                <tr>
+                    <th scope="row">{{ product.id }}</th>
+                    <th><a id="product-{{product.id}}" onmouseenter="product_detail({{product.id}});" 
+                        onmouseleave="product_leave({{product.id}});" href="/product/{{ product.id }}">{{ product.name }}</a></th>
+                    <th>{{ product.price|intcomma}} 원</th>
+                    <th>{{ product.register_date|date:'Y-m-d H:i'}}</th>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+
+{% endblock %} 
+{% endcomment %}
